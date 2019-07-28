@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<svg width="400" height="200" xmlns="http://www.w3.org/2000/svg">
+
+<text x="140" y="40">switch</text>
+
+<text x="220" y="120">R = 200 Ohm</text>
+
+<text x="70" y="100">C = 0.1 F</text>
+<text x="70" y="120">U = 9 V</text>
+
+<polyline points="40,110 60,110 50,110 50,110 50,60 150,60 170,50" style="fill:none;stroke:black;stroke-width:1" />
+
+<polyline points="170,60 330,60 330,80" style="fill:none;stroke:black;stroke-width:1" />
+
+<rect x="320" y="80" width="25" height="50" fill="white" stroke-width="1" stroke="black" />
+
+<polyline points="330,130 330,180 50,180, 50,125, 60,125, 40, 125, 50,125" style="fill:none;stroke:black;stroke-width:1" />
+
+</svg>
