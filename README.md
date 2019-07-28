@@ -10,8 +10,14 @@ Fortunately, some floating point routines were already programmed by Roy Rankin 
 ## Sketch
 <img src="img/circuit.svg?sanitize=true">
 
-The example will be the discharging of a capacitor. We are interested how the voltage is decreasing over the time. So we have to describe:
+The example will be the discharging of a capacitor. We are interested how the voltage is decreasing over the time. We can describe this with following differential equation:
 
 ```
+DE:
 u(t)' = -1/(RC) * u(t)
+
+START VALUES:
+t0 = 0
+u(0) = 9V
+
 ```
