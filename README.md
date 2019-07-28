@@ -9,3 +9,9 @@ Fortunately, some floating point routines were already programmed by Roy Rankin 
 
 ## Sketch
 <img src="img/circuit.svg?sanitize=true">
+
+The example will be the discharging of a capacitor. We are interested how the voltage is decreasing over the time. So we have to describe:
+
+```
+u(t)' = -1/(RC) * u(t)
+```
