@@ -131,9 +131,10 @@ u[n+1] = u[n] + a * h * u[n]
 with a = -1/(RC)
 ```
 
-We have to determine the step size h (which represents the time). It should be small, but I want to have an error effect to show you so we choose 2.5 (0.01 would be a much better choice).
+We have to determine the step size h (which represents the time). It should be small, but I want to have an error effect to show you so we choose 0.5 (0.01 would be a much better choice).
 
 ```
+h = 0.5
 a = -1/(200 * 0.1) = -0.05
 ```
 
