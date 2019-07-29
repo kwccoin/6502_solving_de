@@ -40,7 +40,7 @@ The last formula will be implemented in our program.
 
 Open the code.bin and copy the floating point code. Paste it in the monitor. Now we have to put two number at location 0x4 and 0x8 (both 4 bytes).
 
-The floating point algorithm requires the binary format, so we have to convert numbers. A short description is in the document:
+The floating point algorithm requires the binary format, so we have to convert numbers. A short description is in the code from Woz:
 
 ```
 In the Exponent:
@@ -64,7 +64,7 @@ So lets divide 3 through 0.125
 Integer:    3 = 11
 Fraction:   0.0 | 0
 Exp:        11.0 * 2^0
-            1.10 * 2^1 | Normalisation
+            1.10 * 2^1 | Normalization
 Converted:  0x81 0b01100000 (0x60) 0x0 0x0
 
 0.125:
@@ -79,7 +79,7 @@ Converted:  0x7D 0b01000000 (0x40) 0x0 0x0
 
 Doesn't matter which operation we use (plus, mul or div). The result will always in the second position (0x8). In division the second one (0x8) is the divisor.
 
-So we put the numbers in position in the monitor (radix: hex):
+So we put the numbers in position with the monitor (radix: hex):
 
 ```
 fill 4 81 60 0 0 7D 40 0 0
@@ -131,7 +131,7 @@ u[n+1] = u[n] + a * h * u[n]
 with a = -1/(RC)
 ```
 
-We have to determine the step size h (which represents the time). It should be small, but I want to have an error effect to show you so we choose 0.5 (0.01 would be a much better choice).
+We have to determine the step size h (which represents the time). It should be small, but I want to have an error effect to show you so we choose 2.5 (0.01 would be a much better choice).
 
 ```
 a = -1/(200 * 0.1) = -0.05
