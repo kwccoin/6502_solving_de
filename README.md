@@ -28,9 +28,7 @@ The exact solution is easy and known for this equation. Which is good, so we can
 
 ```
 u[n+1] = u[n] + h * ( -1/(RC) * u[n] )
-
 u[n+1] = u[n] - h/(RC) * u[n]
-
 with a = -h/(RC)
 
 u[n+1] = u[n] + a * u[n]
@@ -55,7 +53,6 @@ In the Exponent:
       ...
 FF Represents +127
 
-
 Exponent    Two's Complement Mantissa
 SEEEEEEE    SM.MMMMMM  MMMMMMMM  MMMMMMMM
     n           n+1       n+2       n+3
@@ -66,36 +63,27 @@ So lets divide 3 through 0.125
 ```
 3.0:
 
-Integer:
-3 = 11
+Integer:    3 = 11
 
-Fraction:
-0.0 | 0
+Fraction:   0.0 | 0
 
-Exp:
-11.0 * 2^0
-1.10 * 2^1 | Normalisation
+Exp:        11.0 * 2^0
+            1.10 * 2^1 | Normalisation
 
-Converted:
-0x81 0b01100000 (0x60) 0x0 0x0
-
+Converted:  0x81 0b01100000 (0x60) 0x0 0x0
 
 0.125:
 
-Integer:
-0 = 0
+Integer:    0 = 0
 
-Fraction:
-0.125 * 2 = 0.25 | 0
-0.25  * 2 = 0.5  | 0
-0.5   * 2 = 1.0  | 1
+Fraction:   0.125 * 2 = 0.25 | 0
+            0.25  * 2 = 0.5  | 0
+            0.5   * 2 = 1.0  | 1
 
-Exp:
-0.001 * 2^0
-1.000 * 2^-3
+Exp:        0.001 * 2^0
+            1.000 * 2^-3
 
-Converted:
-0x7D 0b01000000 (0x40) 0x0 0x0
+Converted:  0x7D 0b01000000 (0x40) 0x0 0x0
 ```
 
 Doesn't matter which operation we use (plus, mul or div). The result will always in the second position (0x8). In division the second one (0x8) is the divisor.
