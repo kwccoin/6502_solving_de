@@ -33,9 +33,52 @@ add_label 1f9d fdiv
 My functions to solve the equation. MIT Licence.
 */
 
+add_label 0x20 t
+add_label 0x24 u
+add_label 0x28 a
+add_label 0x2C h
+add_label 0x30 list
+add_label 0x31 counter
+add_label 0x2000 t_list
+add_label 0x2100 u_list
 
-fill 200 a6 31 a5 20 9d 00 20 e8 a5 21 9d 00 20 e8 a5 22 9d 00 20 e8 a5 23 9d 00 20 e8 86 31 60
-fill 21d a6 32 a5 24 9d 00 21 e8 a5 25 9d 00 21 e8 a5 26 9d 00 21 e8 a5 27 9d 00 21 e8 86 32 60
+fill 20 80  0  0  0 
+fill 24 83 48  0  0
+fill 28 7F C0  0  0
+fill 2C 7F 40  0  0
+fill 30  0
+fill 31  0
+fill 32  0
 
-add_label 200 copyt
-add_label 21d copyu
+
+add_label 40 save2list
+
+assemble 40
+ldx list
+lda $20
+sta t_list,x
+lda $24
+sta u_list,x
+inx
+lda $21
+sta t_list,x
+lda $25
+sta u_list,x
+inx
+lda $22
+sta t_list,x
+lda $26
+sta u_list,x
+inx
+lda $23
+sta t_list,x
+lda $27
+sta u_list,x
+inx
+stx list
+rts
+
+
+
+
+

@@ -2,15 +2,15 @@
 An example how to solve a ordinary differential equation (ODL) on a 6502 with Woz's floating point assembly code.
 
 ## How and Why?
-I'm really into computer history and math. I liked how the whole home computer thing started and the time where people actually coded in assembly. I'm not into games, so if I had one I would try to do lots of math stuff. There are always differential equations in physics which have to be solved with numerical methods. But I will solve a really easy one to show you how to do it.
+I'm really into computer history and math. I liked how the whole home computer thing started and the time where people actually coded in assembly. I'm not into games, so if I had one I would try to do lots of math stuff. There are always differential equations in physics which have to be solved with numerical methods.
 
 
-Fortunately, some floating point routines were already programmed by Roy Rankin and Steve Wozniak (http://www.6502.org/source/floats/wozfp1.txt). I'll use this code and the py65mon (https://github.com/mnaberez/py65) to run it. But it'll work on the VICE emulator too. And on real machines I guess (if you use the already converted binary code. Woz's original doesn't support labels).
+Fortunately, some floating point routines were already programmed by Roy Rankin and Steve Wozniak (http://www.6502.org/source/floats/wozfp1.txt). I'll use this code and the py65mon monitor (https://github.com/mnaberez/py65) to run it. But it'll work on the VICE emulator too. And on real machines I guess.
 
 ## Sketch
 <img src="img/circuit.svg?sanitize=true">
 
-The example will be the discharging of a capacitor. We are interested how the voltage is decreasing over the time. We can describe this with following differential equation:
+The example will be the discharging of a capacitor. I wanr to know how the voltage is decreasing over the time. Following differential equation is used:
 
 ```
 ODL:
@@ -24,7 +24,7 @@ u(0) = 9V
 
 ## Solution
 
-The exact solution is easy and known for this equation. Which is good, so we can compare the results later. To solve it approximately step by step I'm using the Euler method which leads to:
+The exact solution is easy and known for this equation. Which is good, so I can compare the results at the end. To solve it approximately step by step I'm using the Euler method which leads to:
 
 ```
 u[n+1] = u[n] + h * ( -1/(RC) * u[n] )
@@ -38,9 +38,9 @@ The last formula will be implemented in our program.
 
 ## An easy introduction
 
-Open the code.bin and copy the floating point code. Paste it in the monitor. Now we have to put two number at location 0x4 and 0x8 (both 4 bytes).
+Open the code.bin and copy the floating point code. Paste it in the monitor. Now we have to put two numbers at location 0x4 and 0x8 (both 4 bytes).
 
-The floating point algorithm requires the binary format, so we have to convert numbers. A short description is in the code from Woz:
+The floating point algorithm requires the binary format, so we have to convert numbers. A short description can be found in the floating point document (wozfp1.txt) by Woz:
 
 ```
 In the Exponent:
@@ -57,7 +57,7 @@ SEEEEEEE    SM.MMMMMM  MMMMMMMM  MMMMMMMM
     n           n+1       n+2       n+3
 ```
 
-So lets divide 3 through 0.125
+Example: Lets divide 3 through 0.125
 
 ```
 3.0:
@@ -135,6 +135,81 @@ We have to determine the step size h (which represents the time). It should be s
 
 ```
 h = 0.5
-a = -1/(200 * 0.1) = -0.05
+a = -1/(20 * 0.1) = -0.5
+```
+
+To work with variables we have to initialise them. Here are there positions:
+
+```
+t:         0x20 0x21 0x22 0x23
+u:         0x24 0x25 0x26 0x27
+a:         0x28 0x29 0x2A 0x2B
+h:         0x2C 0x2D 0x2E 0x2F
+list:      0x30
+counter:   0x31
+```
+
+t = Current time. Which is saved to a list each step
+u = Current voltage. Which is also saved to a list each step (for plotting later)
+a = Constant value
+h = Step size, constant
+list = Is used as an addition to the initial list location to store the time and voltage values each step
+counter = Counts steps so I can stop the execution after reaching a chosen value.
+
+Labels make it easier to use the variables in the program later:
+
+```
+add_label 0x20 t
+add_label 0x24 u
+add_label 0x28 a
+add_label 0x2C h
+add_label 0x30 list
+add_label 0x31 counter
+
+add_label 0x2000 t_list
+add_label 0x2100 u_list
+```
+
+Set up (initial) values with the monitor:
+
+```
+fill 20 80  0  0  0 
+fill 24 83 48  0  0
+fill 28 7F C0  0  0
+fill 2C 7F 40  0  0
+fill 30  0
+fill 31  0
+fill 32  0
+```
+
+Function which copys the value of t and u to the list locations:
+
+```
+add_label 40 save2list
+
+assemble 40
+ldx list
+lda $20
+sta t_list,x
+lda $24
+sta u_list,x
+inx
+lda $21
+sta t_list,x
+lda $25
+sta u_list,x
+inx
+lda $22
+sta t_list,x
+lda $26
+sta u_list,x
+inx
+lda $23
+sta t_list,x
+lda $27
+sta u_list,x
+inx
+stx list
+rts
 ```
 
