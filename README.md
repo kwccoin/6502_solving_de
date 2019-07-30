@@ -138,7 +138,7 @@ h = 0.5
 a = -1/(20 * 0.1) = -0.5
 ```
 
-To work with variables we have to initialise them. Here are there positions:
+To work with variables we have to initialise them. Here are their positions:
 
 ```
 t:         0x20 0x21 0x22 0x23
@@ -162,19 +162,30 @@ equation:   60
 ```
 
 t = current time. Which is saved to a list each step
+
 u = current voltage. Which is also saved to a list each step (for plotting later)
+
 a = constant value
+
 h = step size, constant
+
 list = is used as an addition to the initial list location to store the time and voltage values each step
+
 counter = counts steps so I can stop the execution after reaching a chosen value.
+
 t_list = start position for time values
+
 x_list = start position for voltage values
 
 
 fadd = floating point function for adding
+
 fmul = floating point function for multiplication
+
 fdiv = floating point function for division
+
 save2list = save current time and voltage to lists
+
 equation = calculates one step
 
 
