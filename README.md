@@ -103,7 +103,7 @@ After finishing, it jumps back and reaches a brk (0x0) which gets us back to the
 From there we check the result:
 
 ```
-mem 4:b
+mem 8:b
 ```
 
 Which gives us:
@@ -151,16 +151,6 @@ t_list:    0x2000
 u_list:    0x2100
 ```
 
-Function positions:
-
-```
-fadd:       1f50
-fmul:       1f77
-fdiv:       1f9d
-save2list:  40
-equation:   60
-```
-
 t = current time. Which is saved to a list each step
 
 u = current voltage. Which is also saved to a list each step (for plotting later)
@@ -177,6 +167,16 @@ t_list = start position for time values
 
 x_list = start position for voltage values
 
+
+Function positions:
+
+```
+fadd:       1f50
+fmul:       1f77
+fdiv:       1f9d
+save2list:  40
+equation:   60
+```
 
 fadd = floating point function for adding
 
