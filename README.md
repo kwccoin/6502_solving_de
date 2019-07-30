@@ -120,7 +120,7 @@ Which means:
 1.1 * 2^4 = 11000 = 24 (DEC)
 ```
 
-It's a little bit funny if you see this kind of stuff the first time. Play with it, you'll figure it out. Attention: If you want to convert negative numbers, you have to use the 2's complement.
+It's a little bit funny if you see this kind of stuff the first time. Play with it, you'll figure it out. Attention: If you want to convert negative numbers, you have to use the 2's complement (after the normalization).
 
 ## Solving the differential equation
 
@@ -147,28 +147,36 @@ a:         0x28 0x29 0x2A 0x2B
 h:         0x2C 0x2D 0x2E 0x2F
 list:      0x30
 counter:   0x31
+t_list:    0x2000
+u_list:    0x2100
 ```
 
-t = Current time. Which is saved to a list each step
-u = Current voltage. Which is also saved to a list each step (for plotting later)
-a = Constant value
-h = Step size, constant
-list = Is used as an addition to the initial list location to store the time and voltage values each step
-counter = Counts steps so I can stop the execution after reaching a chosen value.
-
-Labels make it easier to use the variables in the program later:
+Function positions:
 
 ```
-add_label 0x20 t
-add_label 0x24 u
-add_label 0x28 a
-add_label 0x2C h
-add_label 0x30 list
-add_label 0x31 counter
-
-add_label 0x2000 t_list
-add_label 0x2100 u_list
+fadd:       1f50
+fmul:       1f77
+fdiv:       1f9d
+save2list:  40
+equation:   60
 ```
+
+t = current time. Which is saved to a list each step
+u = current voltage. Which is also saved to a list each step (for plotting later)
+a = constant value
+h = step size, constant
+list = is used as an addition to the initial list location to store the time and voltage values each step
+counter = counts steps so I can stop the execution after reaching a chosen value.
+t_list = start position for time values
+x_list = start position for voltage values
+
+
+fadd = floating point function for adding
+fmul = floating point function for multiplication
+fdiv = floating point function for division
+save2list = save current time and voltage to lists
+equation = calculates one step
+
 
 Set up (initial) values with the monitor:
 
@@ -181,35 +189,141 @@ fill 30  0
 fill 31  0
 fill 32  0
 ```
-
-Function which copys the value of t and u to the list locations:
+Function which saves current time and voltage to list positions.
 
 ```
-add_label 40 save2list
-
 assemble 40
-ldx list
+ldx 30
 lda $20
-sta t_list,x
+sta 2000,x
 lda $24
-sta u_list,x
+sta 2100,x
 inx
 lda $21
-sta t_list,x
+sta 2000,x
 lda $25
-sta u_list,x
+sta 2100,x
 inx
 lda $22
-sta t_list,x
+sta 2000,x
 lda $26
-sta u_list,x
+sta 2100,x
 inx
 lda $23
-sta t_list,x
+sta 2000,x
 lda $27
-sta u_list,x
+sta 2100,x
 inx
-stx list
+stx 30
 rts
 ```
+
+Creating the calculation
+
+u[n+1] = u[n] + a * h * u[n]
+```
+
+assemble 60
+;
+jsr save2list
+;
+;              a
+lda $28
+sta $4
+lda $29
+sta $5
+lda $2a
+sta $6
+lda $2b
+sta $7
+;              h
+lda $2c
+sta $8
+lda $2d
+sta $9
+lda $2e
+sta $a
+lda $2f
+sta $b
+;              a*h
+jsr fmul
+;
+;u_n
+lda $24
+sta $4
+lda $25
+sta $5
+lda $26
+sta $6
+lda $27
+sta $7
+;
+;                 u_n*(a*h)
+jsr fmul
+;
+;                 u_n
+lda $24
+sta $4
+lda $25
+sta $5
+lda $26
+sta $6
+lda $27
+sta $7
+;
+;                u_n + (h*a*u_n)
+jsr fadd
+;
+;                u = u_n+1
+lda $8
+sta $24
+lda $9
+sta $25
+lda $a
+sta $26
+lda $b
+sta $27
+;
+;               h
+lda $2c
+sta $8
+lda $2d
+sta $9
+lda $2e
+sta $a
+lda $2f
+sta $b
+;
+;               t
+lda $20
+sta $4
+lda $21
+sta $5
+lda $22
+sta $6
+lda $23
+sta $7
+;
+;               t+h
+jsr fadd
+;
+;               t = t+h
+lda $8
+sta $20
+lda $9
+sta $21
+lda $a
+sta $22
+lda $b
+sta $23
+;
+rts
+
+```
+
+
+
+
+
+
 

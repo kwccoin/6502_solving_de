@@ -23,24 +23,10 @@ fill 1E00 A2 03 BD D8 1E 95 04 CA 10 F8 20 77 1F A2 03 B5 08 95 10 CA 10 F9 20 E
 
 fill 1F00 18 A2 02 B5 09 75 05 95 09 CA 10 F7 60 06 03 20 12 1F 24 09 10 05 20 8F 1F E6 03 38 A2 04 94 0B B5 07 B4 03 94 07 95 03 CA D0 F3 60 A9 8E 85 08 A9 00 85 0B F0 08 C6 08 06 0B 26 0A 26 09 A5 09 0A 45 09 30 04 A5 08 D0 ED 60 20 8F 1F 20 5D 1F A5 04 C5 08 D0 F7 20 00 1F 50 E3 70 05 90 BD A5 09 0A E6 08 F0 7E A2 FA A9 80 B0 01 0A 56 0F 15 0F 95 0F E8 D0 F2 60 20 0D 1F 65 08 20 CD 1F 18 20 66 1F 90 03 20 00 1F 88 10 F5 46 03 90 AF 38 A2 03 A9 00 F5 08 95 08 CA D0 F7 F0 BC 20 0D 1F E5 08 20 CD 1F 38 A2 02 B5 05 F5 0C 48 CA 10 F8 A2 FD 68 90 02 95 08 E8 D0 F8 26 0B 26 0A 26 09 06 07 26 06 26 05 B0 1C 88 D0 DA F0 BE 86 0B 86 0A 86 09 B0 0D 30 04 68 68 90 B2 49 80 85 08 A0 17 60 10 F7 00 20 5F 1F A5 08 C9 8E D0 F7 60
 
-add_label 1f50 fadd
-add_label 1f77 fmul
-add_label 1f9d fdiv
-
-
 
 /*
 My functions to solve the equation. MIT Licence.
 */
-
-add_label 0x20 t
-add_label 0x24 u
-add_label 0x28 a
-add_label 0x2C h
-add_label 0x30 list
-add_label 0x31 counter
-add_label 0x2000 t_list
-add_label 0x2100 u_list
 
 fill 20 80  0  0  0 
 fill 24 83 48  0  0
@@ -50,35 +36,127 @@ fill 30  0
 fill 31  0
 fill 32  0
 
-
-add_label 40 save2list
-
 assemble 40
-ldx list
+ldx 30
 lda $20
-sta t_list,x
+sta 2000,x
 lda $24
-sta u_list,x
+sta 2100,x
 inx
 lda $21
-sta t_list,x
+sta 2000,x
 lda $25
-sta u_list,x
+sta 2100,x
 inx
 lda $22
-sta t_list,x
+sta 2000,x
 lda $26
-sta u_list,x
+sta 2100,x
 inx
 lda $23
-sta t_list,x
+sta 2000,x
 lda $27
-sta u_list,x
+sta 2100,x
 inx
-stx list
+stx 30
 rts
 
 
 
+assemble 60
+;
+jsr $40
+;
+;              a
+lda $28
+sta $4
+lda $29
+sta $5
+lda $2a
+sta $6
+lda $2b
+sta $7
+;              h
+lda $2c
+sta $8
+lda $2d
+sta $9
+lda $2e
+sta $a
+lda $2f
+sta $b
+;              a*h
+jsr fmul
+;
+;u_n
+lda $24
+sta $4
+lda $25
+sta $5
+lda $26
+sta $6
+lda $27
+sta $7
+;
+;                 u_n*(a*h)
+jsr fmul
+;
+;                 u_n
+lda $24
+sta $4
+lda $25
+sta $5
+lda $26
+sta $6
+lda $27
+sta $7
+;
+;                u_n + (h*a*u_n)
+jsr fadd
+;
+;                u = u_n+1
+lda $8
+sta $24
+lda $9
+sta $25
+lda $a
+sta $26
+lda $b
+sta $27
+;
+;               h
+lda $2c
+sta $8
+lda $2d
+sta $9
+lda $2e
+sta $a
+lda $2f
+sta $b
+;
+;               t
+lda $20
+sta $4
+lda $21
+sta $5
+lda $22
+sta $6
+lda $23
+sta $7
+;
+;               t+h
+jsr fadd
+;
+;               t = t+h
+lda $8
+sta $20
+lda $9
+sta $21
+lda $a
+sta $22
+lda $b
+sta $23
+;
+rts
 
 
