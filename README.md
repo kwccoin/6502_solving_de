@@ -60,6 +60,7 @@ fill 1D00 A5 09 F0 02 10 01 00 20 1C 1F A5 04 A0 80 84 04 49 80 85 0A A9 00 85 0
 fill 1E00 A2 03 BD D8 1E 95 04 CA 10 F8 20 77 1F A2 03 B5 08 95 10 CA 10 F9 20 E8 1F A5 0A 85 1C 38 E9 7C A5 09 E9 00 10 15 18 A5 0A 69 78 A5 09 69 00 10 0B A9 00 A2 03 95 08 CA 10 FB 60 00 20 2C 1F A2 03 B5 10 95 04 CA 10 F9 20 4A 1F A2 03 B5 08 95 10 95 04 CA 10 F7 20 77 1F A2 03 BD DC 1E 95 04 B5 08 95 18 CA 10 F4 20 50 1F A2 03 BD E0 1E 95 04 CA 10 F8 20 9D 1F A2 03 B5 08 95 14 BD E4 1E 95 08 B5 18 95 04 CA 10 F0 20 77 1F 20 1C 1F A2 03 B5 14 95 08 CA 10 F9 20 4A 1F A2 03 BD E8 1E 95 04 CA 10 F8 20 50 1F 20 1C 1F A2 03 B5 10 95 08 CA 10 F9 20 4A 1F A2 03 B5 10 95 04 CA 10 F9 20 9D 1F A2 03 BD E5 1D 95 04 CA 10 F8 20 50 1F 38 A5 1C 65 08 85 08 60 80 5C 55 1E 86 57 6A E1 89 4D 3F 1D 7B 46 FA 70 83 4F A3 03
 
 fill 1F00 18 A2 02 B5 09 75 05 95 09 CA 10 F7 60 06 03 20 12 1F 24 09 10 05 20 8F 1F E6 03 38 A2 04 94 0B B5 07 B4 03 94 07 95 03 CA D0 F3 60 A9 8E 85 08 A9 00 85 0B F0 08 C6 08 06 0B 26 0A 26 09 A5 09 0A 45 09 30 04 A5 08 D0 ED 60 20 8F 1F 20 5D 1F A5 04 C5 08 D0 F7 20 00 1F 50 E3 70 05 90 BD A5 09 0A E6 08 F0 7E A2 FA A9 80 B0 01 0A 56 0F 15 0F 95 0F E8 D0 F2 60 20 0D 1F 65 08 20 CD 1F 18 20 66 1F 90 03 20 00 1F 88 10 F5 46 03 90 AF 38 A2 03 A9 00 F5 08 95 08 CA D0 F7 F0 BC 20 0D 1F E5 08 20 CD 1F 38 A2 02 B5 05 F5 0C 48 CA 10 F8 A2 FD 68 90 02 95 08 E8 D0 F8 26 0B 26 0A 26 09 06 07 26 06 26 05 B0 1C 88 D0 DA F0 BE 86 0B 86 0A 86 09 B0 0D 30 04 68 68 90 B2 49 80 85 08 A0 17 60 10 F7 00 20 5F 1F A5 08 C9 8E D0 F7 60
+
 ```
 
 Now we have to put two numbers at location 0x4 and 0x8 (both 4 bytes).
@@ -382,15 +383,15 @@ cpx #$14 mean we calling the function for 20 times. We start it with
 goto 110
 ```
 
-And check the cycles
+And check the cycles after the calculation
 
 ```
 cycles
-314392
+217824
 ```
-Which mean it would have taken 0.3 seconds on a 1MHZ processor. Pretty fast in my opinion. The emulator took longer on my old notebook.
+Which mean it would have taken 0.2 seconds on a 1 MHz processor. Pretty fast in my opinion. The emulator took longer on my (weak) notebook.
 
-Problem: We can't see the result. That's the problem with converted numbers. We can't read it. I'm cheating now and writing a small c-program to convert it.
+Problem: We can't see the result. That's the problem with converted numbers. We can't read it. I'm cheating now and writing a small Python program to convert it.
 
 Before that, lets save the results in another file
 
@@ -398,3 +399,33 @@ Before that, lets save the results in another file
 save t 200 24F
 save u 300 34F
 ```
+
+Executing the Python script convert.py prints out:
+
+```
+0.0 9.0 9.0
+0.5 6.75 7.009
+1.0 5.062 5.459
+1.5 3.797 4.251
+2.0 2.848 3.311
+2.5 2.136 2.579
+3.0 1.602 2.008
+3.5 1.201 1.564
+4.0 0.901 1.218
+4.5 0.676 0.949
+5.0 0.507 0.739
+5.5 0.38 0.575
+6.0 0.285 0.448
+6.5 0.214 0.349
+7.0 0.16 0.272
+7.5 0.12 0.212
+8.0 0.09 0.165
+8.5 0.068 0.128
+9.0 0.051 0.1
+9.5 0.038 0.078
+```
+
+The third column is the real value. With the help of GnuPlot:
+
+<img src="img/result1.gif">
+
