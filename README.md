@@ -377,13 +377,13 @@ stx $31
 jmp $110
 brk
 ```
-cpx #$14 mean we calling the function for 20 times. We start it with
+cpx #$14 means the function is called for 20 times. The program can only save 256/4 values after it overwrites the first ones again. Starting the program:
 
 ```
 goto 110
 ```
 
-And check the cycles after the calculation
+And checking the cycles after the calculation
 
 ```
 cycles
@@ -409,16 +409,9 @@ Executing the Python script converter.py prints out:
 1.5 3.797 4.251
 2.0 2.848 3.311
 2.5 2.136 2.579
-3.0 1.602 2.008
-3.5 1.201 1.564
-4.0 0.901 1.218
-4.5 0.676 0.949
-5.0 0.507 0.739
-5.5 0.38 0.575
-6.0 0.285 0.448
-6.5 0.214 0.349
-7.0 0.16 0.272
-7.5 0.12 0.212
+.
+.
+.
 8.0 0.09 0.165
 8.5 0.068 0.128
 9.0 0.051 0.1
