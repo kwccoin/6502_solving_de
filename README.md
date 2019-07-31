@@ -471,5 +471,16 @@ time: ~ 0.45 sec
 9.75 0.049 0.069
 ```
 
-<img src="img/result1.gif">
+<img src="img/result2.gif">
+
+## Conclusion
+
+Imagine you're living in a time where the first home computers came out. Like the Apple I. My old professor told me once he had to normalize the differential equations and built a circuit of operational amplifier to get analog results of graphs. He would have been happy to use a home computer with floating point functions.
+
+But it's not fun. You need so much more time to prepare the equation. And this was an easy one. More complex equations need matrix operations too. I think I would program my own floating point on the base of 10. Takes more space and it's slower, but it's so much easier to write and read the numbers.
+
+Luckily programmers figured out that it makes sense to offer floating points in BASIC. But these assembly routines have still their benefits. Imagine you want to control an unstable system. I was surprised how fast these calculations are happening.
+
+It was a nice, small project and I'm happy that it worked at the end. If you have any questions just shot it. Cheers Ben.
+
 
