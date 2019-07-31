@@ -9,7 +9,7 @@ wozfp1.txt: Original floating point source code from Woz and Roy with instructio
 
 wozfp3.txt: An improved version with a really good introduction how to work with it.
 
-convert.py: Converts the two output files t and u into decimal numbers and print them out with the real solution.
+converter.py: Converts the two output files t and u into decimal numbers and print them out with the real solution.
 
 
 ## How and Why?
@@ -400,7 +400,7 @@ save t 200 24F
 save u 300 34F
 ```
 
-Executing the Python script convert.py prints out:
+Executing the Python script converter.py prints out:
 
 ```
 0.0 9.0 9.0
@@ -426,6 +426,50 @@ Executing the Python script convert.py prints out:
 ```
 
 The third column is the real value. With the help of GnuPlot:
+
+<img src="img/result1.gif">
+
+To use a smaller step size I load the whole memory with all the functions:
+
+```
+reset
+load code.hex 0
+```
+
+And change h=0.5 to 0.25 and $113 (comparison to counter) to 40 (0x28)
+
+```
+fill 2c  7e
+fill 113 28
+```
+
+Starting again
+
+```
+goto 110
+```
+
+cycles: 449187
+time: ~ 0.45 sec
+
+```
+.save t 200 2a1
+.save u 300 3a1
+```
+
+```
+./converter.py
+0.0 9.0 9.0
+0.25 7.875 7.942
+0.5 6.891 7.009
+0.75 6.029 6.186
+1.0 5.276 5.459
+.
+.
+.
+9.5 0.056 0.078
+9.75 0.049 0.069
+```
 
 <img src="img/result1.gif">
 
